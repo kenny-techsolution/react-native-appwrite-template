@@ -17,6 +17,10 @@ import {
   Mail, 
   Lock 
 } from 'lucide-react-native';
+import { initializeAppwriteClient, signInWithEmailPassword } from '../appwrite';
+
+// Ensure Appwrite client is initialized (ideally only once in your app entry point)
+initializeAppwriteClient();
 
 export default function SignInScreen() {
   const [email, setEmail] = useState('');
@@ -41,11 +45,18 @@ export default function SignInScreen() {
     }
 
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const result = await signInWithEmailPassword(email, password);
+      if (result.success) {
+        router.replace('/(tabs)');
+      } else {
+        Alert.alert('Sign In Failed', result.error || 'Unable to sign in.');
+      }
+    } catch (err: any) {
+      Alert.alert('Sign In Error', err.message || 'An unexpected error occurred.');
+    } finally {
       setIsLoading(false);
-      router.replace('/(tabs)');
-    }, 1500);
+    }
   };
 
   const handleSocialSignIn = (platform: string) => {
@@ -53,14 +64,14 @@ export default function SignInScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#5856D6' }}>
       <LinearGradient
         colors={['#007AFF', '#5856D6']}
-        className="flex-1"
+        style={{ flex: 1 }}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
-        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           {/* Header */}
           <View className="flex-row items-center px-5 pt-5 pb-8">
             <TouchableOpacity
@@ -76,7 +87,7 @@ export default function SignInScreen() {
           </View>
 
           {/* Form Container */}
-          <View className="flex-1 px-5">
+          <View className="px-5" style={{ flex: 1 }}>
             <View className="bg-white rounded-3xl p-8 shadow-2xl mb-5">
               <Text className="text-3xl font-bold text-gray-900 text-center mb-2">
                 Welcome Back!
@@ -181,7 +192,11 @@ export default function SignInScreen() {
               >
                 <LinearGradient
                   colors={['#007AFF', '#5856D6']}
-                  className="py-5 rounded-2xl items-center"
+                  style={{
+                    paddingVertical: 20,
+                    borderRadius: 16,
+                    alignItems: 'center'
+                  }}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}
                 >

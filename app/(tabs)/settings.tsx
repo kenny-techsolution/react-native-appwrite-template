@@ -8,11 +8,14 @@ import {
   Switch,
 } from 'react-native';
 import { User, Bell, Shield, Moon, Globe, CircleHelp as HelpCircle, LogOut, ChevronRight, Smartphone, Lock } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
+import { signOut } from '../../appwrite';
 
 export default function SettingsScreen() {
   const [notificationsEnabled, setNotificationsEnabled] = React.useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = React.useState(false);
   const [biometricEnabled, setBiometricEnabled] = React.useState(true);
+  const router = useRouter();
 
   const settingsGroups = [
     {
@@ -47,9 +50,20 @@ export default function SettingsScreen() {
     },
   ];
 
-  const handleSettingPress = (item: any) => {
+  const handleSettingPress = async (item: any) => {
     if (item.action === 'signout') {
-      console.log('Sign out pressed');
+      // Call Appwrite signOut and navigate to sign-in
+      try {
+        const result = await signOut();
+        if (result.success) {
+          router.replace('/sign-in');
+        } else {
+          // Optionally show error to user
+          alert(result.error || 'Failed to sign out.');
+        }
+      } catch (err: any) {
+        alert(err.message || 'Unexpected error during sign out.');
+      }
     } else if (item.action === 'navigate') {
       console.log(`Navigate to ${item.title}`);
     }

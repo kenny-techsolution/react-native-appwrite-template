@@ -62,7 +62,7 @@ export default function OnboardingScreen() {
   const isLastPage = currentPage === onboardingData.length - 1;
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#5856D6' }}>
       <LinearGradient
         colors={['#007AFF', '#5856D6']}
         style={{ flex: 1 }}

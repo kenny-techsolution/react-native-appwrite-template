@@ -25,6 +25,25 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
+## Environment Variables
+
+To securely store credentials (such as Appwrite keys), use a `.env` file in your project root. Expo will automatically load variables prefixed with `EXPO_PUBLIC_`.
+
+### Example `.env` file for Appwrite
+
+```
+EXPO_PUBLIC_APPWRITE_ENDPOINT=https://fra.cloud.appwrite.io/v1
+EXPO_PUBLIC_APPWRITE_PROJECT_ID=
+EXPO_PUBLIC_APPWRITE_DATABASE_ID=
+EXPO_PUBLIC_APPWRITE_PROFILES_COLLECTION_ID=
+```
+
+After editing your `.env` file, restart the Expo server:
+
+```bash
+npx expo start -c
+```
+
 ## Get a fresh project
 
 When you're ready, run:
